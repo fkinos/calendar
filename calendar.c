@@ -273,6 +273,24 @@ static int months_days[12] = {
   31, 28, 31, 20, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
+int
+weekday (int day)
+{
+  struct tm *tm;
+  time_t t;
+  time_t nt;
+
+  t = time (NULL);
+  tm = localtime (&t);
+
+  tm->tm_mday = day;
+
+  nt = mktime(tm);
+  tm = localtime (&nt);
+
+  return tm->tm_wday;
+}
+
 void
 draw ()
 {
@@ -289,7 +307,7 @@ draw ()
   tm = localtime (&t);
 
   today = tm->tm_mday;
-  start = tm->tm_wday - 1;
+  start = weekday(1) + 1;
   days = months_days[tm->tm_mon];
 
   clear_screen (pixels, WHITE);
