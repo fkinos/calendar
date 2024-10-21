@@ -268,7 +268,7 @@ static char *weekdays[] = {
 };
 
 static int months_days[12] = {
-  31, 28, 31, 20, 31, 30, 31, 31, 30, 31, 30, 31
+  31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
 static int current_month, actual_month, current_year, actual_year;
