@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
@@ -10,6 +11,7 @@
 #define BLACK 0x000000
 #define WHITE 0xffffff
 #define RED 0xff0000
+#define BLUE 0x3333de
 
 static int zoom = 1;
 static int reqdraw;
@@ -349,7 +351,11 @@ draw ()
 
   /* draw week days */
   for (i = 0; i < 7; i++) {
-    draw_string (pixels, 12 + (i * 20), 28, weekdays[i], BLACK);
+    int color = BLACK;
+    if (i == 0 || i == 6) {
+      color = BLUE;
+    }
+    draw_string (pixels, 12 + (i * 20), 28, weekdays[i], color);
   }
 
   for (i = 0; i < 6; i++) {
@@ -371,9 +377,12 @@ draw ()
     for (j = 0; j < 6; j++) {
       if (calendar[j][i] != 0) {
         char day_string[3];
-        int color = calendar[j][i] == today ? RED : BLACK;
-        if (current_month != actual_month || current_year != actual_year)
-          color = BLACK;
+        int color = BLACK;
+
+        if (i == 0 || i == 6)
+          color = BLUE;
+        if (calendar[j][i] == today && (current_month == actual_month && current_year == actual_year))
+          color = RED;
 
         snprintf (day_string, 3, "%2d", calendar[j][i]);
         draw_string (pixels, 8 + (i * 20), 44 + (j * 15), day_string, color);
