@@ -396,7 +396,6 @@ handle_keys (SDL_Event e)
 {
   int sym = e.key.keysym.sym;
   int offset = 0;
-  int new_current_month = 0;
   int last_current_month = 0;
 
   switch (sym) {
@@ -410,16 +409,12 @@ handle_keys (SDL_Event e)
 
   last_current_month = current_month;
 
-  new_current_month = (current_month - 1 + (offset % 12) + 12) % 12 + 1;
-  current_month = new_current_month;
+  current_month = (current_month + (offset % 12) + 12) % 12;
 
-  if (last_current_month == 1 && new_current_month == 12) {
+  if (last_current_month == 0 && current_month == 11)
     current_year -= 1;
-  }
-
-  if (last_current_month == 12 && new_current_month == 1) {
+  if (last_current_month == 11 && current_month == 0)
     current_year += 1;
-  }
 }
 
 int
