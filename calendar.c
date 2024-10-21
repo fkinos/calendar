@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_render.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
@@ -395,8 +394,13 @@ void
 handle_keys (SDL_Event e)
 {
   int sym = e.key.keysym.sym;
+  SDL_Keymod mods = e.key.keysym.mod;
   int offset = 0;
   int last_current_month = 0;
+  int alt = 0;
+
+  if (mods & KMOD_ALT)
+    alt = 1;
 
   switch (sym) {
   case SDLK_LEFT:
@@ -407,8 +411,12 @@ handle_keys (SDL_Event e)
     break;
   }
 
-  last_current_month = current_month;
+  if (alt) {
+    current_year += offset;
+    return;
+  }
 
+  last_current_month = current_month;
   current_month = (current_month + (offset % 12) + 12) % 12;
 
   if (last_current_month == 0 && current_month == 11)
